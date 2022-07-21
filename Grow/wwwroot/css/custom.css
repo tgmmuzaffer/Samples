@@ -1,0 +1,45 @@
+﻿
+body {
+    color: #000;
+    background-color: #81bff8;
+    transition: background-color 1s ease;
+}
+
+.change-color {
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+
+.color-blue {
+    background-color: #81bff8;
+}
+
+.color-yellow {
+    background-color: #f8dc64;
+}
+
+body {
+    text-align: center;
+    font-size: 120%;
+    line-height: 1.618;
+}
+
+.grow {
+    font-size: 40px;
+}
+
+h1, h2 {
+    font-size: 40px;
+    letter-spacing: -0.05em;
+    line-height: 1.1;
+}
+
+.left-right {
+    position: absolute;
+    margin-top: 300px;
+    min-width: max-content
+}
