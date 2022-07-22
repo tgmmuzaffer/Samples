@@ -1,0 +1,84 @@
+﻿@using MessageService.UI.Dtos
+@model MessageDto
+@{
+    int fromid = Convert.ToInt32(Model.OutMessageDto.FromId);
+}
+<h1 class="center">Chat</h1>
+<div id="maindiv">
+    @foreach (var item in Model.InMessageDtos)
+{
+    if (item.FromId == fromid)
+    {
+        <div id="@item.Id" data-toVal="@item.ToId" class="alert alert-primary col-md-8" role="contentinfo">
+            @item.MessageContent
+        </div>
+    }
+    else
+    {
+        <div id="@item.Id" data-toVal="@item.ToId" class="alert alert-success ml-auto col-md-8" role="contentinfo">
+            @item.MessageContent
+        </div>
+    }
+
+}
+</div>
+
+
+<form class="mt5">
+    <input type="hidden" asp-for="OutMessageDto.IsDeleted" value="false">
+    <input type="hidden" asp-for="OutMessageDto.ToId" value="@Model.OutMessageDto.ToId" />
+    <input type="hidden" asp-for="OutMessageDto.FromId" value="@Model.OutMessageDto.FromId" />
+    <input type="hidden" asp-for="OutMessageDto.RelatedId" value="@Model.OutMessageDto.RelatedId" />
+    <input type="hidden" asp-for="OutMessageDto.ReplyCount" value="@Model.OutMessageDto.ReplyCount" />
+    <input type="hidden" asp-for="OutMessageDto.IpAddr" value="@Model.OutMessageDto.IpAddr" />
+    <div class="input-group">
+        <textarea class="form-control" asp-for="OutMessageDto.MessageContent">@Model.OutMessageDto.MessageContent</textarea>
+    </div>
+    <input type="button" id="send" class="btn btn-primary mt-2" value="Send" />
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    var outMessageDto = {}
+//$('#OutMessageDto_MessageContent').click(function(e) {
+//    location.reload();
+
+//});
+    $('#send').click(function(e) {
+        var lastentry = $('.alert:last').attr('id');
+        var lastentryToValue=$('.alert:last').attr('data-toVal');
+
+        var isDelete = $('#OutMessageDto_IsDeleted').val();
+        var toId = $('#OutMessageDto_ToId').val();
+        var fromId = $('#OutMessageDto_FromId').val();
+        var relatedId = lastentry;
+        var replayCount = $('#OutMessageDto_ReplyCount').val();
+        var ipAddr = $('#OutMessageDto_IpAddr').val();
+        var content = $('#OutMessageDto_MessageContent').val();
+        outMessageDto = {
+            MessageContent: content,
+            RelatedId: relatedId,
+            FromId: fromId,
+            ToId: toId,
+            IpAddr: ipAddr,
+            ReplyCount: replayCount,
+            IsDeleted: isDelete
+        };
+
+        $.post("/postchat", outMessageDto, function(data) {
+            var parsedData = jQuery.parseJSON(data);
+            if (@fromid== parsedData.Data.FromId) {
+                $('#maindiv').append('<div id="'+parsedData.Data.Id+'" data-toVal="'+parsedData.Data.ToId+'" class="alert alert-primary col-md-8" role="contentinfo">'+parsedData.Data.MessageContent+'</div>')
+                $('#OutMessageDto_MessageContent').val('');
+                location.reload();
+            }
+            else {
+                
+                $('#maindiv').append('<div id="'+parsedData.Data.Id+'" data-toVal="'+parsedData.Data.ToId+'" class="alert alert-success ml-auto col-md-8" role="contentinfo">'+parsedData.Data.MessageContent+'</div>')
+                $('#OutMessageDto_MessageContent').val('');
+                location.reload();
+
+            }
+        });
+    });
+</script>

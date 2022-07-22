@@ -1,0 +1,11 @@
+﻿@using MessageService.UI.Models
+@model List<User>
+
+<h1>Contact List</h1>
+
+<ul class="list-group">
+    @foreach (var item in Model)
+{
+    <li class="list-group-item"><a asp-controller="Contact" asp-action="GetChat" asp-route-id="@item.Id">@item.Name</a></li>
+}
+</ul>

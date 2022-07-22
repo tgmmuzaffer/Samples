@@ -1,0 +1,16 @@
+﻿@using MessageService.UI.Models
+@model User
+
+<h1>Login</h1>
+
+<form asp-controller="Home" asp-action="Login" method="post">
+  <div class="form-group col-md-8"> 
+    <label asp-for="Mail"></label>
+    <input class="form-control" asp-for="Mail">    
+  </div>
+  <div class="form-group col-md-8">
+    <label asp-for="Pass"></label>
+    <input  class="form-control" asp-for="Pass">
+  </div>
+  <button type="submit" class="btn btn-primary ml-3">Submit</button>
+</form>
